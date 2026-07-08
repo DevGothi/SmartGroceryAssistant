@@ -18,8 +18,8 @@ include_directories(include)
 #  The Qt GUI application (the real project) 
 add_executable(SmartGrocery
     src/main.cpp
-    src/GroceryManager.cpp
-    src/ItemsTabWidget.cpp
+    #src/GroceryManager.cpp
+    #src/ItemsTabWidget.cpp
     src/HelpDialog.cpp
     # >>> teammates add their .cpp files here, e.g.:
     # src/MainWindow.cpp
