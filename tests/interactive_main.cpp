@@ -1,141 +1,310 @@
-// ----------------------------------------------------------------------------
-// Dev Gothi + Irvanah - INTERACTIVE demo for search / remove / budget features.
-// ----------------------------------------------------------------------------
+#include "Budget.h"
+#include "DataManager.h"
+#include "GroceryItem.h"
+#include "ItemCrud.h"
+#include "ItemSearchDelete.h"
 
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "GroceryItem.h"
-#include "ItemSearchDelete.h"
-#include "Budget.h"
-#include <iomanip>
-#include "DataManager.h"
 
-static void printItems(const std::vector<GroceryItem>& items) {
-    if (items.empty()) {
-        std::cout << "   (no items found)\n";
-        return;
+namespace
+{
+    void printItems(const std::vector<GroceryItem>& items)
+    {
+        if (items.empty())
+        {
+            std::cout << "No items found.\n";
+            return;
+        }
+
+        std::cout
+            << std::left
+            << std::setw(12) << "ID"
+            << std::setw(22) << "Name"
+            << std::setw(12) << "Category"
+            << std::right
+            << std::setw(10) << "Price"
+            << std::setw(8) << "Qty"
+            << std::setw(12) << "Cost"
+            << '\n';
+
+        std::cout << std::string(76, '-') << '\n';
+
+        for (const auto& item : items)
+        {
+            std::cout
+                << std::left
+                << std::setw(12) << item.getItemID()
+                << std::setw(22) << item.getName()
+                << std::setw(12) << item.getCategory()
+                << std::right
+                << std::fixed
+                << std::setprecision(2)
+                << std::setw(10) << item.getPrice()
+                << std::setw(8) << item.getQuantity()
+                << std::setw(12) << item.getCost()
+                << '\n';
+        }
     }
 
-    std::cout << std::left
-              << std::setw(12) << "ID"
-              << std::setw(12) << "Name"
-              << std::setw(12) << "Category"
-              << std::setw(10) << "Price"
-              << std::setw(5) << "Qty"
-              << '\n';
+    std::string ask(const std::string& prompt)
+    {
+        std::cout << prompt;
 
-    std::cout << "--------------------------------------------------------\n";
+        std::string answer;
+        std::getline(std::cin, answer);
 
-    for (const auto& item : items) {
-        std::cout << std::left
-                  << std::setw(12) << item.getItemID()
-                  << std::setw(12) << item.getName()
-                  << std::setw(12) << item.getCategory()
-                  << "$" << std::setw(9) << item.getPrice()
-                  << std::setw(5) << item.getQuantity()
-                  << '\n';
+        return answer;
+    }
+
+    GroceryItemInput readItemInput()
+    {
+        GroceryItemInput input;
+
+        input.itemID =
+            ask("Item ID (example ITEM-0001): ");
+
+        input.name =
+            ask("Item name: ");
+
+        input.category =
+            ask("Category (Produce/Dairy/Meat/Bakery/Pantry): ");
+
+        input.price =
+            ask("Price: ");
+
+        input.quantity =
+            ask("Quantity: ");
+
+        return input;
+    }
+
+    void printOperationResult(
+        const ItemOperationResult& result
+    )
+    {
+        if (result.success)
+        {
+            std::cout
+                << "Success: "
+                << result.message
+                << '\n';
+
+            return;
+        }
+
+        std::cout
+            << "Error: "
+            << result.message
+            << '\n';
+
+        for (const auto& error : result.errors)
+        {
+            std::cout
+                << "- "
+                << error
+                << '\n';
+        }
     }
 }
 
-int main() {
+int main()
+{
+    DataManager dataManager;
+    dataManager.loadSampleData();
 
-    DataManager manager;
-
-    manager.loadSampleData();
-
-    std::vector<GroceryItem>& items = manager.getItems();
-    /*std::vector<GroceryItem> items = {
-        {"ITEM-0001", "Milk",    "Dairy",   3.49, 2},
-        {"ITEM-0002", "Cheddar", "Dairy",   6.99, 1},
-        {"ITEM-0003", "Apple",   "Produce", 0.80, 12},
-        {"ITEM-0004", "Chicken", "Meat",    9.50, 1},
-        {"ITEM-0005", "Bread",   "Bakery",  2.25, 3},
-    };*/
+    std::vector<GroceryItem>& items =
+        dataManager.getItems();
 
     Budget budget;
     budget.setBudget(50.00);
 
-    std::cout << "==============================================\n";
-    std::cout << " Smart Grocery Assistant Demo\n";
-    std::cout << " Search/Delete + Budget Tracking\n";
-    std::cout << "==============================================\n";
+    std::cout
+        << "============================================\n"
+        << " Smart Grocery Shopping Assistant\n"
+        << " Grocery Item CRUD Demonstration\n"
+        << "============================================\n";
 
-    while (true) {
-        std::cout << "\nMenu:\n"
-          << "  1 - Show all items\n"
-          << "  2 - Search items (by name or category)\n"
-          << "  3 - Delete an item (by ID)\n"
-          << "  4 - Check budget\n"
-          << "  5 - Save data\n"
-          << "  6 - Load data\n"
-          << "  7 - Exit\n"
-          << "Choose an option: ";
+    while (true)
+    {
+        std::cout
+            << "\nMenu:\n"
+            << "1 - Show all items\n"
+            << "2 - Add grocery item\n"
+            << "3 - Edit grocery item\n"
+            << "4 - Search items by name or category\n"
+            << "5 - Delete an item by ID\n"
+            << "6 - Check budget\n"
+            << "7 - Save data\n"
+            << "8 - Load data\n"
+            << "9 - Exit\n";
 
-        std::string choice;
-        std::getline(std::cin, choice);
+        const std::string choice =
+            ask("Choose an option: ");
 
-        if (choice == "1") {
-            std::cout << "\nAll items:\n";
+        if (choice == "1")
+        {
             printItems(items);
         }
-        else if (choice == "2") {
-            std::cout << "Enter search text: ";
-            std::string query;
-            std::getline(std::cin, query);
+        else if (choice == "2")
+        {
+            std::cout << "\nAdd Grocery Item\n";
 
-            auto results = searchItems(items, query);
-            std::cout << "\nResults for \"" << query << "\":\n";
+            const GroceryItemInput input =
+                readItemInput();
+
+            const ItemOperationResult result =
+                addGroceryItem(items, input);
+
+            printOperationResult(result);
+
+            if (result.success)
+            {
+                printItems(items);
+            }
+        }
+        else if (choice == "3")
+        {
+            std::cout << "\nEdit Grocery Item\n";
+
+            const std::string originalID =
+                ask("Enter the current Item ID: ");
+
+            if (!findItemIndexByID(
+                items,
+                originalID
+            ).has_value())
+            {
+                std::cout
+                    << "Error: Item was not found.\n";
+
+                continue;
+            }
+
+            std::cout
+                << "Enter all updated information.\n"
+                << "The Item ID may remain the same.\n";
+
+            const GroceryItemInput updatedInput =
+                readItemInput();
+
+            const ItemOperationResult result =
+                editGroceryItem(
+                    items,
+                    originalID,
+                    updatedInput
+                );
+
+            printOperationResult(result);
+
+            if (result.success)
+            {
+                printItems(items);
+            }
+        }
+        else if (choice == "4")
+        {
+            const std::string query =
+                ask("Enter item name or category: ");
+
+            const std::vector<GroceryItem> results =
+                searchItems(items, query);
+
             printItems(results);
         }
-        else if (choice == "3") {
-            std::cout << "Enter the Item ID to delete (e.g. ITEM-0002): ";
-            std::string id;
-            std::getline(std::cin, id);
+        else if (choice == "5")
+        {
+            const std::string itemID =
+                ask("Enter the Item ID to delete: ");
 
-            if (deleteItem(items, id)) {
-                std::cout << "\nDeleted " << id << ". Remaining items:\n";
+            const ItemOperationResult result =
+                removeGroceryItem(items, itemID);
+
+            printOperationResult(result);
+
+            if (result.success)
+            {
                 printItems(items);
             }
-            else {
-                std::cout << "\nNo item with ID \"" << id
-                    << "\" was found. Nothing was deleted.\n";
-            }
         }
-        else if (choice == "4") {
-            std::cout << "\nBudget Summary:\n";
-            std::cout << "Budget Limit: $" << budget.getBudget() << "\n";
-            std::cout << "Total Cost: $" << budget.calculateTotalCost(items) << "\n";
-            std::cout << "Remaining Budget: $" << budget.getRemainingBudget(items) << "\n";
+        else if (choice == "6")
+        {
+            const double total =
+                budget.calculateTotalCost(items);
 
-            if (budget.isOverBudget(items)) {
-                std::cout << "Warning: You are over budget!\n";
+            std::cout
+                << std::fixed
+                << std::setprecision(2)
+                << "Budget limit: $"
+                << budget.getBudget()
+                << '\n'
+                << "Current total: $"
+                << total
+                << '\n'
+                << "Remaining budget: $"
+                << budget.getRemainingBudget(items)
+                << '\n';
+
+            if (budget.isOverBudget(items))
+            {
+                std::cout
+                    << "Warning: You are over budget!\n";
             }
-            else {
-                std::cout << "You are within budget.\n";
+            else
+            {
+                std::cout
+                    << "You are within budget.\n";
             }
         }
-        else if (choice == "5") {
-            if (manager.saveData("grocery.txt")) {
-                std::cout << "\nData saved to grocery.txt\n";
-            } else {
-                std::cout << "\nError: Could not save data.\n";
+        else if (choice == "7")
+        {
+            if (dataManager.saveData("grocery.txt"))
+            {
+                std::cout
+                    << "Data saved to grocery.txt.\n";
+            }
+            else
+            {
+                std::cout
+                    << "Error: Data could not be saved.\n";
             }
         }
-        else if (choice == "6") {
-            if (manager.loadData("grocery.txt")) {
-                std::cout << "\nData loaded from grocery.txt\n";
-                printItems(items);
-            } else {
-                std::cout << "\nError: Could not load data.\n";
+        else if (choice == "8")
+        {
+            try
+            {
+                if (dataManager.loadData("grocery.txt"))
+                {
+                    std::cout
+                        << "Data loaded from grocery.txt.\n";
+
+                    printItems(items);
+                }
+                else
+                {
+                    std::cout
+                        << "Error: grocery.txt could not be opened.\n";
+                }
+            }
+            catch (const std::exception& exception)
+            {
+                std::cout
+                    << "Error while loading data: "
+                    << exception.what()
+                    << '\n';
             }
         }
-        else if (choice == "7") {
+        else if (choice == "9")
+        {
             std::cout << "Goodbye!\n";
             break;
         }
-        else {
-            std::cout << "Invalid option, please enter 1-7.\n";
+        else
+        {
+            std::cout
+                << "Invalid option. Enter a number from 1 to 9.\n";
         }
     }
 

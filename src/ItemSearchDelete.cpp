@@ -3,68 +3,120 @@
 #include <algorithm>
 #include <cctype>
 
-namespace {
+namespace
+{
+    std::string trim(const std::string& text)
+    {
+        const auto first = std::find_if_not(
+            text.begin(),
+            text.end(),
+            [](unsigned char character)
+            {
+                return std::isspace(character) != 0;
+            }
+        );
 
-    // Helper: lower-case a copy of a string so comparisons are case-insensitive.
-    // Using unsigned char with std::tolower avoids undefined behaviour on
-    // negative values (which is what makes some special-character strings crash).
-    std::string toLower(const std::string& text) {
-        std::string result = text;
-        std::transform(result.begin(), result.end(), result.begin(),
-            [](unsigned char c) { return std::tolower(c); });
-        return result;
+        if (first == text.end())
+        {
+            return "";
+        }
+
+        const auto last = std::find_if_not(
+            text.rbegin(),
+            text.rend(),
+            [](unsigned char character)
+            {
+                return std::isspace(character) != 0;
+            }
+        ).base();
+
+        return std::string(first, last);
     }
 
-    // Helper: does 'haystack' contain 'needle'? (both already lower-cased)
-    bool contains(const std::string& haystack, const std::string& needle) {
-        return haystack.find(needle) != std::string::npos;
+    std::string toLower(std::string text)
+    {
+        std::transform(
+            text.begin(),
+            text.end(),
+            text.begin(),
+            [](unsigned char character)
+            {
+                return static_cast<char>(
+                    std::tolower(character)
+                    );
+            }
+        );
+
+        return text;
     }
 
-} // anonymous namespace
+    bool contains(
+        const std::string& completeText,
+        const std::string& searchText
+    )
+    {
+        return completeText.find(searchText) !=
+            std::string::npos;
+    }
+}
 
-// 
-// SEARCH
-// 
-std::vector<GroceryItem> searchItems(const std::vector<GroceryItem>& items,
-    const std::string& query) {
-    // Empty search returns everything (spec requirement).
-    if (query.empty()) {
+std::vector<GroceryItem> searchItems(
+    const std::vector<GroceryItem>& items,
+    const std::string& query
+)
+{
+    const std::string cleanedQuery = trim(query);
+
+    // Empty search returns every item.
+    if (cleanedQuery.empty())
+    {
         return items;
     }
 
-    const std::string q = toLower(query);
-    std::vector<GroceryItem> matches;
+    const std::string loweredQuery =
+        toLower(cleanedQuery);
 
-    // Range-based for loop (modern C++ requirement).
-    for (const auto& item : items) {
-        const std::string name = toLower(item.getName());
-        const std::string category = toLower(item.getCategory());
+    std::vector<GroceryItem> results;
 
-        // Match on name OR category. Special characters are just compared as
-        // ordinary text here, so they can never crash the search.
-        if (contains(name, q) || contains(category, q)) {
-            matches.push_back(item);
+    for (const auto& item : items)
+    {
+        const std::string loweredName =
+            toLower(item.getName());
+
+        const std::string loweredCategory =
+            toLower(item.getCategory());
+
+        if (
+            contains(loweredName, loweredQuery) ||
+            contains(loweredCategory, loweredQuery)
+            )
+        {
+            results.push_back(item);
         }
     }
 
-    return matches;
+    return results;
 }
 
-// 
-// DELETE
-// 
-bool deleteItem(std::vector<GroceryItem>& items, const std::string& itemID) {
-    // Find the item with the matching unique ID.
-    auto it = std::find_if(items.begin(), items.end(),
-        [&itemID](const GroceryItem& item) {
+bool deleteItem(
+    std::vector<GroceryItem>& items,
+    const std::string& itemID
+)
+{
+    const auto iterator = std::find_if(
+        items.begin(),
+        items.end(),
+        [&](const GroceryItem& item)
+        {
             return item.getItemID() == itemID;
-        });
+        }
+    );
 
-    // Nothing matched -> tell the caller so the GUI can warn the user.
-    if (it == items.end()) {
+    if (iterator == items.end())
+    {
         return false;
     }
 
-    items.erase(it);
+    items.erase(iterator);
     return true;
 }

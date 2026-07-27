@@ -1,210 +1,560 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1162</width>
-    <height>668</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Smart Grocery Shopping Assistant</string>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="tableItems">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>110</y>
-      <width>751</width>
-      <height>261</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>Item ID</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Category</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Price</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Quantity</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Total Cost</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>10</y>
-      <width>381</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Smart Grocery Shopping Assistant</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>70</y>
-      <width>63</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Search:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtSearch">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>70</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSearch">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>70</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Search</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnAdd">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>420</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Item</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnEdit">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>420</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Edit Item</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSave">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>520</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnDelete">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>420</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete Item</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnLoad">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>520</y>
-      <width>90</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>390</y>
-      <width>311</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Estimated Total:  $0.00</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1162</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
- </widget>
- <resources/>
- <connections/>
+	<class>MainWindow</class>
+	<widget class="QMainWindow" name="MainWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>1180</width>
+				<height>720</height>
+			</rect>
+		</property>
+		<property name="minimumSize">
+			<size>
+				<width>980</width>
+				<height>620</height>
+			</size>
+		</property>
+		<property name="windowTitle">
+			<string>Smart Grocery Shopping Assistant[*]</string>
+		</property>
+		<property name="styleSheet">
+			<string notr="true">
+				QMainWindow {
+				background: #f4f7fb;
+				}
+				QLabel#titleLabel {
+				color: #16324f;
+				font-size: 24px;
+				font-weight: 700;
+				}
+				QLabel#subtitleLabel {
+				color: #607080;
+				font-size: 12px;
+				}
+				QGroupBox {
+				background: white;
+				border: 1px solid #d9e2ec;
+				border-radius: 10px;
+				margin-top: 14px;
+				font-weight: 600;
+				color: #243b53;
+				}
+				QGroupBox::title {
+				subcontrol-origin: margin;
+				left: 14px;
+				padding: 0 6px;
+				}
+				QLineEdit, QComboBox {
+				min-height: 34px;
+				border: 1px solid #bcccdc;
+				border-radius: 6px;
+				padding: 0 10px;
+				background: white;
+				}
+				QLineEdit:focus, QComboBox:focus {
+				border: 2px solid #2979ff;
+				}
+				QPushButton {
+				min-height: 36px;
+				border-radius: 6px;
+				padding: 0 14px;
+				font-weight: 600;
+				}
+				QPushButton#addButton {
+				background: #1976d2;
+				color: white;
+				border: none;
+				}
+				QPushButton#editButton {
+				background: #f9a825;
+				color: #1f2933;
+				border: none;
+				}
+				QPushButton#deleteButton {
+				background: #c62828;
+				color: white;
+				border: none;
+				}
+				QPushButton#clearFormButton, QPushButton#clearSearchButton {
+				background: #eef2f7;
+				color: #334e68;
+				border: 1px solid #cbd5e1;
+				}
+				QPushButton:disabled {
+				background: #d9e2ec;
+				color: #829ab1;
+				}
+				QTableWidget {
+				background: white;
+				border: 1px solid #d9e2ec;
+				border-radius: 8px;
+				gridline-color: #e8eef4;
+				alternate-background-color: #f8fafc;
+				}
+				QHeaderView::section {
+				background: #16324f;
+				color: white;
+				padding: 8px;
+				border: none;
+				font-weight: 600;
+				}
+				QStatusBar {
+				background: white;
+				color: #486581;
+				}
+			</string>
+		</property>
+		<widget class="QWidget" name="centralwidget">
+			<layout class="QVBoxLayout" name="mainLayout">
+				<property name="leftMargin">
+					<number>24</number>
+				</property>
+				<property name="topMargin">
+					<number>20</number>
+				</property>
+				<property name="rightMargin">
+					<number>24</number>
+				</property>
+				<property name="bottomMargin">
+					<number>20</number>
+				</property>
+				<property name="spacing">
+					<number>16</number>
+				</property>
+				<item>
+					<layout class="QVBoxLayout" name="headerLayout">
+						<property name="spacing">
+							<number>2</number>
+						</property>
+						<item>
+							<widget class="QLabel" name="titleLabel">
+								<property name="text">
+									<string>Smart Grocery Shopping Assistant</string>
+								</property>
+							</widget>
+						</item>
+						<item>
+							<widget class="QLabel" name="subtitleLabel">
+								<property name="text">
+									<string>Add, edit, search and delete grocery items</string>
+								</property>
+							</widget>
+						</item>
+					</layout>
+				</item>
+				<item>
+					<layout class="QHBoxLayout" name="contentLayout">
+						<property name="spacing">
+							<number>18</number>
+						</property>
+						<item>
+							<widget class="QGroupBox" name="itemFormGroup">
+								<property name="minimumSize">
+									<size>
+										<width>330</width>
+										<height>0</height>
+									</size>
+								</property>
+								<property name="maximumSize">
+									<size>
+										<width>380</width>
+										<height>16777215</height>
+									</size>
+								</property>
+								<property name="title">
+									<string>Grocery Item Details</string>
+								</property>
+								<layout class="QVBoxLayout" name="formOuterLayout">
+									<property name="leftMargin">
+										<number>16</number>
+									</property>
+									<property name="topMargin">
+										<number>20</number>
+									</property>
+									<property name="rightMargin">
+										<number>16</number>
+									</property>
+									<property name="bottomMargin">
+										<number>16</number>
+									</property>
+									<item>
+										<layout class="QFormLayout" name="itemFormLayout">
+											<property name="horizontalSpacing">
+												<number>12</number>
+											</property>
+											<property name="verticalSpacing">
+												<number>12</number>
+											</property>
+											<item row="0" column="0">
+												<widget class="QLabel" name="itemIdLabel">
+													<property name="text">
+														<string>Item ID</string>
+													</property>
+												</widget>
+											</item>
+											<item row="0" column="1">
+												<widget class="QLineEdit" name="itemIdEdit">
+													<property name="placeholderText">
+														<string>ITEM-0001</string>
+													</property>
+												</widget>
+											</item>
+											<item row="1" column="0">
+												<widget class="QLabel" name="itemNameLabel">
+													<property name="text">
+														<string>Name</string>
+													</property>
+												</widget>
+											</item>
+											<item row="1" column="1">
+												<widget class="QLineEdit" name="itemNameEdit">
+													<property name="placeholderText">
+														<string>Example: Milk</string>
+													</property>
+												</widget>
+											</item>
+											<item row="2" column="0">
+												<widget class="QLabel" name="categoryLabel">
+													<property name="text">
+														<string>Category</string>
+													</property>
+												</widget>
+											</item>
+											<item row="2" column="1">
+												<widget class="QComboBox" name="categoryBox">
+													<item>
+														<property name="text">
+															<string>Select category</string>
+														</property>
+													</item>
+													<item>
+														<property name="text">
+															<string>Produce</string>
+														</property>
+													</item>
+													<item>
+														<property name="text">
+															<string>Dairy</string>
+														</property>
+													</item>
+													<item>
+														<property name="text">
+															<string>Meat</string>
+														</property>
+													</item>
+													<item>
+														<property name="text">
+															<string>Bakery</string>
+														</property>
+													</item>
+													<item>
+														<property name="text">
+															<string>Pantry</string>
+														</property>
+													</item>
+												</widget>
+											</item>
+											<item row="3" column="0">
+												<widget class="QLabel" name="priceLabel">
+													<property name="text">
+														<string>Price ($)</string>
+													</property>
+												</widget>
+											</item>
+											<item row="3" column="1">
+												<widget class="QLineEdit" name="priceEdit">
+													<property name="placeholderText">
+														<string>0.00</string>
+													</property>
+												</widget>
+											</item>
+											<item row="4" column="0">
+												<widget class="QLabel" name="quantityLabel">
+													<property name="text">
+														<string>Quantity</string>
+													</property>
+												</widget>
+											</item>
+											<item row="4" column="1">
+												<widget class="QLineEdit" name="quantityEdit">
+													<property name="placeholderText">
+														<string>1</string>
+													</property>
+												</widget>
+											</item>
+										</layout>
+									</item>
+									<item>
+										<widget class="QLabel" name="formValidationLabel">
+											<property name="minimumSize">
+												<size>
+													<width>0</width>
+													<height>70</height>
+												</size>
+											</property>
+											<property name="text">
+												<string/>
+											</property>
+											<property name="alignment">
+												<set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+											</property>
+											<property name="wordWrap">
+												<bool>true</bool>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<layout class="QGridLayout" name="formButtonsLayout">
+											<property name="horizontalSpacing">
+												<number>8</number>
+											</property>
+											<property name="verticalSpacing">
+												<number>8</number>
+											</property>
+											<item row="0" column="0">
+												<widget class="QPushButton" name="addButton">
+													<property name="text">
+														<string>Add Item</string>
+													</property>
+												</widget>
+											</item>
+											<item row="0" column="1">
+												<widget class="QPushButton" name="editButton">
+													<property name="enabled">
+														<bool>false</bool>
+													</property>
+													<property name="text">
+														<string>Edit Item</string>
+													</property>
+												</widget>
+											</item>
+											<item row="1" column="0">
+												<widget class="QPushButton" name="deleteButton">
+													<property name="enabled">
+														<bool>false</bool>
+													</property>
+													<property name="text">
+														<string>Delete Item</string>
+													</property>
+												</widget>
+											</item>
+											<item row="1" column="1">
+												<widget class="QPushButton" name="clearFormButton">
+													<property name="text">
+														<string>Clear Form</string>
+													</property>
+												</widget>
+											</item>
+										</layout>
+									</item>
+									<item>
+										<spacer name="formVerticalSpacer">
+											<property name="orientation">
+												<enum>Qt::Vertical</enum>
+											</property>
+											<property name="sizeHint" stdset="0">
+												<size>
+													<width>20</width>
+													<height>40</height>
+												</size>
+											</property>
+										</spacer>
+									</item>
+								</layout>
+							</widget>
+						</item>
+						<item>
+							<widget class="QGroupBox" name="itemsGroup">
+								<property name="title">
+									<string>Grocery Items</string>
+								</property>
+								<layout class="QVBoxLayout" name="itemsLayout">
+									<property name="leftMargin">
+										<number>14</number>
+									</property>
+									<property name="topMargin">
+										<number>20</number>
+									</property>
+									<property name="rightMargin">
+										<number>14</number>
+									</property>
+									<property name="bottomMargin">
+										<number>14</number>
+									</property>
+									<item>
+										<layout class="QHBoxLayout" name="searchLayout">
+											<item>
+												<widget class="QLabel" name="searchLabel">
+													<property name="text">
+														<string>Search</string>
+													</property>
+												</widget>
+											</item>
+											<item>
+												<widget class="QLineEdit" name="searchEdit">
+													<property name="placeholderText">
+														<string>Search by item name or category...</string>
+													</property>
+													<property name="clearButtonEnabled">
+														<bool>true</bool>
+													</property>
+												</widget>
+											</item>
+											<item>
+												<widget class="QPushButton" name="clearSearchButton">
+													<property name="text">
+														<string>Clear Search</string>
+													</property>
+												</widget>
+											</item>
+										</layout>
+									</item>
+									<item>
+										<widget class="QTableWidget" name="itemsTable">
+											<property name="minimumSize">
+												<size>
+													<width>0</width>
+													<height>430</height>
+												</size>
+											</property>
+											<property name="alternatingRowColors">
+												<bool>true</bool>
+											</property>
+											<property name="selectionBehavior">
+												<enum>QAbstractItemView::SelectRows</enum>
+											</property>
+											<property name="selectionMode">
+												<enum>QAbstractItemView::SingleSelection</enum>
+											</property>
+											<property name="editTriggers">
+												<set>QAbstractItemView::NoEditTriggers</set>
+											</property>
+											<column>
+												<property name="text">
+													<string>Item ID</string>
+												</property>
+											</column>
+											<column>
+												<property name="text">
+													<string>Name</string>
+												</property>
+											</column>
+											<column>
+												<property name="text">
+													<string>Category</string>
+												</property>
+											</column>
+											<column>
+												<property name="text">
+													<string>Price</string>
+												</property>
+											</column>
+											<column>
+												<property name="text">
+													<string>Quantity</string>
+												</property>
+											</column>
+											<column>
+												<property name="text">
+													<string>Total Cost</string>
+												</property>
+											</column>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="tableHintLabel">
+											<property name="text">
+												<string>Select a row to edit or delete an item. Search updates automatically.</string>
+											</property>
+											<property name="styleSheet">
+												<string notr="true">color: #607080;</string>
+											</property>
+										</widget>
+									</item>
+								</layout>
+							</widget>
+						</item>
+					</layout>
+				</item>
+			</layout>
+		</widget>
+		<widget class="QMenuBar" name="menubar">
+			<property name="geometry">
+				<rect>
+					<x>0</x>
+					<y>0</y>
+					<width>1180</width>
+					<height>25</height>
+				</rect>
+			</property>
+			<widget class="QMenu" name="menuFile">
+				<property name="title">
+					<string>&amp;File</string>
+				</property>
+				<addaction name="actionSaveData"/>
+				<addaction name="actionLoadData"/>
+				<addaction name="separator"/>
+				<addaction name="actionExit"/>
+			</widget>
+			<widget class="QMenu" name="menuHelp">
+				<property name="title">
+					<string>&amp;Help</string>
+				</property>
+				<addaction name="actionHelp"/>
+			</widget>
+			<addaction name="menuFile"/>
+			<addaction name="menuHelp"/>
+		</widget>
+		<widget class="QStatusBar" name="statusbar"/>
+		<action name="actionSaveData">
+			<property name="text">
+				<string>Save Data...</string>
+			</property>
+			<property name="shortcut">
+				<string>Ctrl+S</string>
+			</property>
+		</action>
+		<action name="actionLoadData">
+			<property name="text">
+				<string>Load Data...</string>
+			</property>
+			<property name="shortcut">
+				<string>Ctrl+O</string>
+			</property>
+		</action>
+		<action name="actionExit">
+			<property name="text">
+				<string>Exit</string>
+			</property>
+			<property name="shortcut">
+				<string>Ctrl+Q</string>
+			</property>
+		</action>
+		<action name="actionHelp">
+			<property name="text">
+				<string>How to Use</string>
+			</property>
+			<property name="shortcut">
+				<string>F1</string>
+			</property>
+		</action>
+	</widget>
+	<tabstops>
+		<tabstop>itemIdEdit</tabstop>
+		<tabstop>itemNameEdit</tabstop>
+		<tabstop>categoryBox</tabstop>
+		<tabstop>priceEdit</tabstop>
+		<tabstop>quantityEdit</tabstop>
+		<tabstop>addButton</tabstop>
+		<tabstop>editButton</tabstop>
+		<tabstop>deleteButton</tabstop>
+		<tabstop>clearFormButton</tabstop>
+		<tabstop>searchEdit</tabstop>
+		<tabstop>clearSearchButton</tabstop>
+		<tabstop>itemsTable</tabstop>
+	</tabstops>
+	<resources/>
+	<connections/>
 </ui>
