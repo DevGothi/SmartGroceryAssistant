@@ -6,6 +6,7 @@
 #include "ItemValidation.h"
 
 #include <QAbstractItemView>
+#include <QPalette>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
@@ -38,11 +39,14 @@ namespace
         {
             widget->setStyleSheet(
                 "border: 1px solid #c62828;"
-                "background-color: #fff5f5;");
+                "background-color: #fff5f5;"
+                "color: black;");
         }
         else
         {
-            widget->setStyleSheet("");
+            widget->setStyleSheet(
+                "color: black;"
+                "background-color: white;");
         }
     }
 }
@@ -53,6 +57,33 @@ MainWindow::MainWindow(QWidget* parent)
     hasUnsavedChanges(false)
 {
     ui->setupUi(this);
+
+    ui->categoryBox->setStyleSheet(
+        "QComboBox {"
+        "   color: black;"
+        "   background-color: white;"
+        "}"
+        "QComboBox QAbstractItemView {"
+        "   color: black;"
+        "   background-color: white;"
+        "   selection-color: black;"
+        "   selection-background-color: #1f7bd1;"
+        "}"
+        );
+
+    ui->itemsTable->setStyleSheet(
+        "QTableWidget {"
+        "    color: #000000;"
+        "    background-color: #ffffff;"
+        "}"
+        "QTableWidget::item {"
+        "    color: #000000;"
+        "}"
+        "QTableWidget::item:selected {"
+        "    color: #ffffff;"
+        "    background-color: #a64ac9;"
+        "}"
+        );
 
     setupTable();
     setupConnections();
