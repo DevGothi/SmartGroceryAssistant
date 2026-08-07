@@ -168,7 +168,7 @@ void MainWindow::setupConnections()
 
 void MainWindow::loadStartupData()
 {
-    currentFilePath = QDir::current().filePath("data/grocery_items.txt");
+    currentFilePath = QDir::current().filePath("data/grocery_data.json");
 
     if (QFileInfo::exists(currentFilePath))
     {
@@ -581,7 +581,7 @@ bool MainWindow::saveToFile(const QString& filePath)
     hasUnsavedChanges = false;
     setWindowModified(false);
 
-    statusBar()->showMessage("Grocery data saved.", 4000);
+    statusBar()->showMessage("Application data saved to JSON.", 4000);
     return true;
 }
 
@@ -591,7 +591,7 @@ bool MainWindow::saveUsingDialog()
         this,
         "Save Grocery Data",
         currentFilePath,
-        "Text files (*.txt);;All files (*.*)");
+        "JSON files (*.json);;All files (*.*)");
 
     if (selectedPath.isEmpty())
     {
@@ -644,7 +644,7 @@ void MainWindow::onLoadData()
         this,
         "Load Grocery Data",
         currentFilePath,
-        "Text files (*.txt);;All files (*.*)");
+        "JSON files (*.json);;All files (*.*)");
 
     if (selectedPath.isEmpty())
     {
@@ -658,7 +658,7 @@ void MainWindow::onLoadData()
             QMessageBox::critical(
                 this,
                 "Load Failed",
-                "The selected file could not be opened.");
+               "The file could not be loaded. It may be missing, empty, corrupted, or contain invalid data.");
             return;
         }
     }
@@ -680,7 +680,7 @@ void MainWindow::onLoadData()
     clearItemForm();
     refreshVisibleItems();
 
-    statusBar()->showMessage("Grocery data loaded.", 4000);
+    statusBar()->showMessage("Application data loaded from JSON.", 4000);
 }
 
 void MainWindow::onOpenHelp()

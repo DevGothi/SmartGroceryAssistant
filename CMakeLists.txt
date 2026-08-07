@@ -9,6 +9,14 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+include(FetchContent)
+
+FetchContent_Declare(
+        nlohmann_json
+        URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+)
+
+FetchContent_MakeAvailable(nlohmann_json)
 
 # --------------------------------------------------
 # BACKEND: works on every group member's computer
@@ -37,7 +45,11 @@ target_include_directories(
     PUBLIC
     include
 )
-
+target_link_libraries(
+        smart_grocery_core
+        PUBLIC
+        nlohmann_json::nlohmann_json
+)
 # --------------------------------------------------
 # BACKEND TESTS: Dev can run these without Qt
 # --------------------------------------------------
