@@ -27,6 +27,12 @@ public:
     // -------------------------------------------------
 
     bool addItem(const GroceryItem& item);
+
+    bool editItem(
+        const std::string& originalItemID,
+        const GroceryItem& updatedItem
+    );
+
     bool deleteItem(const std::string& itemID);
 
     std::vector<GroceryItem> searchItems(
@@ -53,7 +59,6 @@ public:
     ) const;
 
     std::vector<ShoppingList>& getShoppingLists();
-
     const std::vector<ShoppingList>& getShoppingLists() const;
 
     // -------------------------------------------------
@@ -67,7 +72,6 @@ public:
     ) const;
 
     std::vector<Budget>& getBudgets();
-
     const std::vector<Budget>& getBudgets() const;
 
     // -------------------------------------------------
@@ -81,7 +85,6 @@ public:
     ) const;
 
     std::vector<UserProfile>& getUsers();
-
     const std::vector<UserProfile>& getUsers() const;
 
     // -------------------------------------------------
@@ -97,12 +100,7 @@ public:
     ) const;
 
     std::vector<PurchaseRecord>& getPurchases();
-
     const std::vector<PurchaseRecord>& getPurchases() const;
-
-    // -------------------------------------------------
-    // Utility
-    // -------------------------------------------------
 
     void clear();
 };

@@ -1180,6 +1180,124 @@ check(
     protectedManager.getItems()[0].getItemID() == "ITEM-3001",
     "Existing data survives duplicate collection load failures"
 );
+    // -------------------------------------------------
+// GROCERY MANAGER DIRECT VALIDATION TESTS
+// -------------------------------------------------
+
+GroceryManager directValidationManager;
+
+check(
+    directValidationManager.addItem(
+        GroceryItem(
+            "ITEM-7001",
+            "Rice",
+            "Pantry",
+            10.00,
+            2
+        )
+    ),
+    "GroceryManager accepts valid direct item"
+);
+
+check(
+    !directValidationManager.addItem(
+        GroceryItem(
+            "BAD",
+            "Milk",
+            "Dairy",
+            3.00,
+            1
+        )
+    ),
+    "GroceryManager rejects invalid direct item ID"
+);
+
+check(
+    !directValidationManager.addItem(
+        GroceryItem(
+            "ITEM-7002",
+            "Milk",
+            "WrongCategory",
+            3.00,
+            1
+        )
+    ),
+    "GroceryManager rejects invalid direct category"
+);
+
+check(
+    !directValidationManager.addItem(
+        GroceryItem(
+            "ITEM-7003",
+            "Milk",
+            "Dairy",
+            -3.00,
+            1
+        )
+    ),
+    "GroceryManager rejects invalid direct price"
+);
+
+check(
+    !directValidationManager.addItem(
+        GroceryItem(
+            "ITEM-7004",
+            "Milk",
+            "Dairy",
+            3.00,
+            0
+        )
+    ),
+    "GroceryManager rejects invalid direct quantity"
+);
+
+check(
+    directValidationManager.editItem(
+        "ITEM-7001",
+        GroceryItem(
+            "ITEM-7001",
+            "Brown Rice",
+            "Pantry",
+            12.00,
+            3
+        )
+    ),
+    "GroceryManager edits valid item"
+);
+
+check(
+    directValidationManager.getItems()[0].getName()
+        == "Brown Rice",
+    "GroceryManager stores edited item"
+);
+
+check(
+    !directValidationManager.editItem(
+        "ITEM-7001",
+        GroceryItem(
+            "BAD",
+            "Brown Rice",
+            "Pantry",
+            12.00,
+            3
+        )
+    ),
+    "GroceryManager rejects invalid edit"
+);
+
+check(
+    !directValidationManager.editItem(
+        "ITEM-9999",
+        GroceryItem(
+            "ITEM-7005",
+            "Bread",
+            "Bakery",
+            3.00,
+            1
+        )
+    ),
+    "GroceryManager rejects edit for missing item"
+);
     std::cout
         << "\nPassed: " << passed
         << "\nFailed: " << failed

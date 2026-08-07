@@ -1,6 +1,8 @@
 #include "GroceryManager.h"
 
+#include "ItemCrud.h"
 #include "ItemSearchDelete.h"
+#include "ItemValidation.h"
 
 #include <algorithm>
 #include <cctype>
@@ -46,6 +48,19 @@ namespace
 
         return std::regex_match(userID, pattern);
     }
+
+    GroceryItemInput itemToInput(
+        const GroceryItem& item
+    )
+    {
+        return {
+            item.getItemID(),
+            item.getName(),
+            item.getCategory(),
+            std::to_string(item.getPrice()),
+            std::to_string(item.getQuantity())
+        };
+    }
 }
 
 // -------------------------------------------------
@@ -56,15 +71,56 @@ bool GroceryManager::addItem(
     const GroceryItem& item
 )
 {
-    if (
-        item.getItemID().empty() ||
-        itemIDExists(item.getItemID())
-    )
+    const GroceryItemInput input =
+        itemToInput(item);
+
+    const ItemValidationResult validation =
+        validateGroceryItem(
+            input,
+            items
+        );
+
+    if (!validation.isValid())
     {
         return false;
     }
 
     items.push_back(item);
+    return true;
+}
+
+bool GroceryManager::editItem(
+    const std::string& originalItemID,
+    const GroceryItem& updatedItem
+)
+{
+    const auto index =
+        findItemIndexByID(
+            items,
+            originalItemID
+        );
+
+    if (!index.has_value())
+    {
+        return false;
+    }
+
+    const GroceryItemInput input =
+        itemToInput(updatedItem);
+
+    const ItemValidationResult validation =
+        validateGroceryItem(
+            input,
+            items,
+            items[*index].getItemID()
+        );
+
+    if (!validation.isValid())
+    {
+        return false;
+    }
+
+    items[*index] = updatedItem;
     return true;
 }
 
