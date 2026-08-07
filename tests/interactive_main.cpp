@@ -3,6 +3,7 @@
 #include "GroceryItem.h"
 #include "ItemCrud.h"
 #include "ItemSearchDelete.h"
+#include "GroceryManager.h"
 
 #include <iomanip>
 #include <iostream>
@@ -112,14 +113,33 @@ namespace
 
 int main()
 {
+    GroceryManager groceryManager;
     DataManager dataManager;
-    dataManager.loadSampleData();
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0001", "Milk", "Dairy", 3.49, 2)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0002", "Cheddar", "Dairy", 6.99, 1)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0003", "Apple", "Produce", 0.80, 12)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0004", "Chicken", "Meat", 9.50, 1)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0005", "Bread", "Bakery", 2.25, 3)
+    );
 
     std::vector<GroceryItem>& items =
-        dataManager.getItems();
+        groceryManager.getItems();
 
-    Budget budget;
-    budget.setBudget(50.00);
+    Budget budget("BUD-0001", 50.00);
 
     std::cout
         << "============================================\n"
@@ -237,6 +257,9 @@ int main()
             std::cout
                 << std::fixed
                 << std::setprecision(2)
+                << "Budget ID: "
+                << budget.getBudgetID()
+                << '\n'
                 << "Budget limit: $"
                 << budget.getBudget()
                 << '\n'
@@ -245,25 +268,23 @@ int main()
                 << '\n'
                 << "Remaining budget: $"
                 << budget.getRemainingBudget(items)
+                << '\n'
+                << "Budget usage: "
+                << budget.getUsagePercentage(items)
+                << "%\n"
+                << "Status: "
+                << budget.getBudgetStatus(items)
                 << '\n';
-
-            if (budget.isOverBudget(items))
-            {
-                std::cout
-                    << "Warning: You are over budget!\n";
-            }
-            else
-            {
-                std::cout
-                    << "You are within budget.\n";
-            }
         }
         else if (choice == "7")
         {
-            if (dataManager.saveData("grocery.txt"))
+            if (dataManager.saveData(
+                groceryManager,
+                "grocery_data.json"
+            ))
             {
                 std::cout
-                    << "Data saved to grocery.txt.\n";
+                    << "Data saved to grocery_data.json.\n";
             }
             else
             {
@@ -273,27 +294,21 @@ int main()
         }
         else if (choice == "8")
         {
-            try
-            {
-                if (dataManager.loadData("grocery.txt"))
-                {
-                    std::cout
-                        << "Data loaded from grocery.txt.\n";
-
-                    printItems(items);
-                }
-                else
-                {
-                    std::cout
-                        << "Error: grocery.txt could not be opened.\n";
-                }
-            }
-            catch (const std::exception& exception)
+            if (dataManager.loadData(
+                groceryManager,
+                "grocery_data.json"
+            ))
             {
                 std::cout
-                    << "Error while loading data: "
-                    << exception.what()
-                    << '\n';
+                    << "Data loaded from grocery_data.json.\n";
+
+                printItems(items);
+            }
+            else
+            {
+                std::cout
+                    << "Error: grocery_data.json is missing, empty, "
+                    << "corrupted, or contains invalid data.\n";
             }
         }
         else if (choice == "9")
