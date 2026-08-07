@@ -26,6 +26,10 @@ add_library(
 
     src/Budget.cpp
     src/DataManager.cpp
+        src/GroceryManager.cpp
+        src/ShoppingList.cpp
+        src/UserProfile.cpp
+        src/PurchaseRecord.cpp
 )
 
 target_include_directories(
@@ -41,6 +45,10 @@ target_include_directories(
 add_executable(
     dev_tests
     tests/test_main.cpp
+        include/GroceryManager.h
+        include/ShoppingList.h
+        include/UserProfile.h
+        include/PurchaseRecord.h
 )
 
 target_link_libraries(

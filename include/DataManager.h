@@ -1,24 +1,22 @@
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
-#include <vector>
 #include <string>
-#include "GroceryItem.h"
+
+class GroceryManager;
 
 class DataManager
 {
-private:
-    std::vector<GroceryItem> items;
-
 public:
-    void addItem(const GroceryItem& item);
-    std::vector<GroceryItem>& getItems();
-    const std::vector<GroceryItem>& getItems() const;
+    bool saveData(
+        const GroceryManager& groceryManager,
+        const std::string& filename
+    ) const;
 
-    void loadSampleData();
-
-    bool saveData(const std::string& filename) const;
-    bool loadData(const std::string& filename);
+    bool loadData(
+        GroceryManager& groceryManager,
+        const std::string& filename
+    ) const;
 };
 
 #endif

@@ -21,7 +21,7 @@ double Budget::calculateTotalCost(const std::vector<GroceryItem>& items) const
 
     for (const auto& item : items)
     {
-        total += item.getPrice() * item.getQuantity();
+        total += item.getCost();
     }
 
     return total;

@@ -1,34 +1,15 @@
 #include "DataManager.h"
+
+#include "GroceryManager.h"
+
 #include <fstream>
 #include <sstream>
+#include <string>
 
-void DataManager::addItem(const GroceryItem& item)
-{
-    items.push_back(item);
-}
-
-std::vector<GroceryItem>& DataManager::getItems()
-{
-    return items;
-}
-
-const std::vector<GroceryItem>& DataManager::getItems() const
-{
-    return items;
-}
-
-void DataManager::loadSampleData()
-{
-    items.clear();
-
-    items.push_back(GroceryItem("ITEM-0001", "Milk", "Dairy", 3.49, 2));
-    items.push_back(GroceryItem("ITEM-0002", "Cheddar", "Dairy", 6.99, 1));
-    items.push_back(GroceryItem("ITEM-0003", "Apple", "Produce", 0.80, 12));
-    items.push_back(GroceryItem("ITEM-0004", "Chicken", "Meat", 9.50, 1));
-    items.push_back(GroceryItem("ITEM-0005", "Bread", "Bakery", 2.25, 3));
-}
-
-bool DataManager::saveData(const std::string& filename) const
+bool DataManager::saveData(
+    const GroceryManager& groceryManager,
+    const std::string& filename
+) const
 {
     std::ofstream file(filename);
 
@@ -37,7 +18,7 @@ bool DataManager::saveData(const std::string& filename) const
         return false;
     }
 
-    for (const auto& item : items)
+    for (const auto& item : groceryManager.getItems())
     {
         file << item.getItemID() << ","
              << item.getName() << ","
@@ -46,11 +27,13 @@ bool DataManager::saveData(const std::string& filename) const
              << item.getQuantity() << "\n";
     }
 
-    file.close();
     return true;
 }
 
-bool DataManager::loadData(const std::string& filename)
+bool DataManager::loadData(
+    GroceryManager& groceryManager,
+    const std::string& filename
+) const
 {
     std::ifstream file(filename);
 
@@ -59,32 +42,66 @@ bool DataManager::loadData(const std::string& filename)
         return false;
     }
 
-    items.clear();
+    groceryManager.getItems().clear();
 
     std::string line;
 
-    while (std::getline(file, line))
+    try
     {
-        std::stringstream ss(line);
+        while (std::getline(file, line))
+        {
+            if (line.empty())
+            {
+                continue;
+            }
 
-        std::string id;
-        std::string name;
-        std::string category;
-        std::string priceText;
-        std::string quantityText;
+            std::stringstream stream(line);
 
-        std::getline(ss, id, ',');
-        std::getline(ss, name, ',');
-        std::getline(ss, category, ',');
-        std::getline(ss, priceText, ',');
-        std::getline(ss, quantityText, ',');
+            std::string itemID;
+            std::string name;
+            std::string category;
+            std::string priceText;
+            std::string quantityText;
 
-        double price = std::stod(priceText);
-        int quantity = std::stoi(quantityText);
+            std::getline(stream, itemID, ',');
+            std::getline(stream, name, ',');
+            std::getline(stream, category, ',');
+            std::getline(stream, priceText, ',');
+            std::getline(stream, quantityText);
 
-        items.push_back(GroceryItem(id, name, category, price, quantity));
+            if (
+                itemID.empty() ||
+                name.empty() ||
+                category.empty() ||
+                priceText.empty() ||
+                quantityText.empty()
+            )
+            {
+                return false;
+            }
+
+            const double price = std::stod(priceText);
+            const int quantity = std::stoi(quantityText);
+
+            GroceryItem item(
+                itemID,
+                name,
+                category,
+                price,
+                quantity
+            );
+
+            if (!groceryManager.addItem(item))
+            {
+                return false;
+            }
+        }
+    }
+    catch (const std::exception&)
+    {
+        groceryManager.getItems().clear();
+        return false;
     }
 
-    file.close();
     return true;
 }

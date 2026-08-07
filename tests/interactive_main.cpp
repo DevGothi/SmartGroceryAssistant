@@ -3,7 +3,7 @@
 #include "GroceryItem.h"
 #include "ItemCrud.h"
 #include "ItemSearchDelete.h"
-
+#include "GroceryManager.h"
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -112,12 +112,30 @@ namespace
 
 int main()
 {
+    GroceryManager groceryManager;
     DataManager dataManager;
-    dataManager.loadSampleData();
 
-    std::vector<GroceryItem>& items =
-        dataManager.getItems();
+    groceryManager.addItem(
+        GroceryItem("ITEM-0001", "Milk", "Dairy", 3.49, 2)
+    );
 
+    groceryManager.addItem(
+        GroceryItem("ITEM-0002", "Cheddar", "Dairy", 6.99, 1)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0003", "Apple", "Produce", 0.80, 12)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0004", "Chicken", "Meat", 9.50, 1)
+    );
+
+    groceryManager.addItem(
+        GroceryItem("ITEM-0005", "Bread", "Bakery", 2.25, 3)
+    );
+
+    std::vector<GroceryItem>& items = groceryManager.getItems();
     Budget budget;
     budget.setBudget(50.00);
 
@@ -260,7 +278,7 @@ int main()
         }
         else if (choice == "7")
         {
-            if (dataManager.saveData("grocery.txt"))
+            if (dataManager.saveData(groceryManager, "grocery.txt"))
             {
                 std::cout
                     << "Data saved to grocery.txt.\n";
@@ -275,7 +293,7 @@ int main()
         {
             try
             {
-                if (dataManager.loadData("grocery.txt"))
+                if (dataManager.loadData(groceryManager, "grocery.txt"))
                 {
                     std::cout
                         << "Data loaded from grocery.txt.\n";
